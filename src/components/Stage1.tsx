@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { stage1Questions } from '../gameData'
+import { playCorrect, playWrong } from '../sounds'
+import PassOverlay from './PassOverlay'
 
 interface Props {
   onComplete: () => void
@@ -25,6 +27,7 @@ export default function Stage1({ onComplete }: Props) {
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null)
   const [wrongWord, setWrongWord] = useState<string | null>(null)
   const [imgError, setImgError] = useState(false)
+  const [done, setDone] = useState(false)
 
   const pool = stage1Questions.map(q => q.word)
   const q = stage1Questions[idx]
@@ -36,19 +39,25 @@ export default function Stage1({ onComplete }: Props) {
     setImgError(false)
   }, [idx])
 
+  if (done) {
+    return <PassOverlay message="1단계 성공" onDone={onComplete} />
+  }
+
   function handleSelect(word: string) {
     if (feedback === 'correct') return
 
     if (word === q.word) {
+      playCorrect()
       setFeedback('correct')
       setTimeout(() => {
         if (idx + 1 >= stage1Questions.length) {
-          onComplete()
+          setDone(true)
         } else {
           setIdx(i => i + 1)
         }
       }, 1200)
     } else {
+      playWrong()
       setWrongWord(word)
       setFeedback('wrong')
       setTimeout(() => {

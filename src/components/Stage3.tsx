@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { stage3Questions } from '../gameData'
 import { transcribeAudio, checkAnswer } from '../api'
+import { playCorrect, playWrong, playRecordStart, playFanfare } from '../sounds'
+import PassOverlay from './PassOverlay'
 
 interface Props {
   onComplete: () => void
@@ -14,6 +16,7 @@ export default function Stage3({ onComplete }: Props) {
   const [processing, setProcessing] = useState(false)
   const [feedback, setFeedback] = useState<Feedback>(null)
   const [imgError, setImgError] = useState(false)
+  const [done, setDone] = useState(false)
   const mediaRecRef = useRef<MediaRecorder | null>(null)
   const chunksRef = useRef<Blob[]>([])
 
@@ -25,6 +28,17 @@ export default function Stage3({ onComplete }: Props) {
     setRecording(false)
     setProcessing(false)
   }, [idx])
+
+  if (done) {
+    return (
+      <PassOverlay
+        message="규칙 배울 준비 완료"
+        onDone={onComplete}
+        playSound={playFanfare}
+        duration={3200}
+      />
+    )
+  }
 
   async function startRecording() {
     try {
@@ -44,6 +58,7 @@ export default function Stage3({ onComplete }: Props) {
       }
 
       mr.start()
+      playRecordStart()
       setRecording(true)
       setFeedback(null)
     } catch {
@@ -63,18 +78,21 @@ export default function Stage3({ onComplete }: Props) {
     try {
       const text = await transcribeAudio(blob)
       if (checkAnswer(text, q.word)) {
+        playCorrect()
         setFeedback('correct')
         setTimeout(() => {
           if (idx + 1 >= stage3Questions.length) {
-            onComplete()
+            setDone(true)
           } else {
             setIdx(i => i + 1)
           }
         }, 1600)
       } else {
+        playWrong()
         setFeedback('wrong')
       }
     } catch {
+      playWrong()
       setFeedback('wrong')
     } finally {
       setProcessing(false)
