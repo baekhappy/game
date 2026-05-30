@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { stage2Questions } from '../gameData'
 import { playCorrect, playWrong } from '../sounds'
 import PassOverlay from './PassOverlay'
+import StarProgress from './StarProgress'
 
 interface Props {
   onComplete: () => void
@@ -28,6 +29,7 @@ export default function Stage2({ onComplete }: Props) {
   const [wrongWord, setWrongWord] = useState<string | null>(null)
   const [imgError, setImgError] = useState(false)
   const [done, setDone] = useState(false)
+  const [correctCount, setCorrectCount] = useState(0)
 
   const pool = stage2Questions.map(q => q.word)
   const q = stage2Questions[idx]
@@ -48,6 +50,7 @@ export default function Stage2({ onComplete }: Props) {
 
     if (word === q.word) {
       playCorrect()
+      setCorrectCount(c => c + 1)
       setFeedback('correct')
       setTimeout(() => {
         if (idx + 1 >= stage2Questions.length) {
@@ -77,6 +80,8 @@ export default function Stage2({ onComplete }: Props) {
         </div>
         <div className="progress-pill">{idx + 1} / {stage2Questions.length}</div>
       </header>
+
+      <StarProgress total={stage2Questions.length} filled={correctCount} />
 
       <div className={`image-card ${feedback === 'correct' ? 'pop' : ''}`}>
         {imgError ? (

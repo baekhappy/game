@@ -3,6 +3,7 @@ import { stage3Questions } from '../gameData'
 import { transcribeAudio, checkAnswer } from '../api'
 import { playCorrect, playWrong, playRecordStart, playFanfare } from '../sounds'
 import PassOverlay from './PassOverlay'
+import StarProgress from './StarProgress'
 
 interface Props {
   onComplete: () => void
@@ -17,6 +18,7 @@ export default function Stage3({ onComplete }: Props) {
   const [feedback, setFeedback] = useState<Feedback>(null)
   const [imgError, setImgError] = useState(false)
   const [done, setDone] = useState(false)
+  const [correctCount, setCorrectCount] = useState(0)
   const mediaRecRef = useRef<MediaRecorder | null>(null)
   const chunksRef = useRef<Blob[]>([])
 
@@ -79,6 +81,7 @@ export default function Stage3({ onComplete }: Props) {
       const text = await transcribeAudio(blob)
       if (checkAnswer(text, q.word)) {
         playCorrect()
+        setCorrectCount(c => c + 1)
         setFeedback('correct')
         setTimeout(() => {
           if (idx + 1 >= stage3Questions.length) {
@@ -122,6 +125,8 @@ export default function Stage3({ onComplete }: Props) {
         </div>
         <div className="progress-pill">{idx + 1} / {stage3Questions.length}</div>
       </header>
+
+      <StarProgress total={stage3Questions.length} filled={correctCount} />
 
       <div className={`image-card ${feedback === 'correct' ? 'pop' : ''}`}>
         {imgError ? (
