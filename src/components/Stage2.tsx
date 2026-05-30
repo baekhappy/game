@@ -91,6 +91,7 @@ export default function Stage2({ onComplete }: Props) {
           </div>
         ) : (
           <img
+            key={q.imagePath}
             src={q.imagePath}
             alt={q.word}
             className="main-image"
