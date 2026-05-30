@@ -66,24 +66,19 @@ function noiseBurst(ctx: AudioContext, startTime: number, vol: number) {
   const buf = ctx.createBuffer(1, samples, ctx.sampleRate)
   const data = buf.getChannelData(0)
   for (let i = 0; i < samples; i++) data[i] = Math.random() * 2 - 1
-
   const src = ctx.createBufferSource()
   src.buffer = buf
-
   const flt = ctx.createBiquadFilter()
   flt.type = 'bandpass'
   flt.frequency.value = 1300
   flt.Q.value = 0.9
-
   const gain = ctx.createGain()
   src.connect(flt)
   flt.connect(gain)
   gain.connect(ctx.destination)
-
   gain.gain.setValueAtTime(0, startTime)
   gain.gain.linearRampToValueAtTime(vol, startTime + 0.006)
   gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.08)
-
   src.start(startTime)
   src.stop(startTime + 0.09)
 }
@@ -91,10 +86,8 @@ function noiseBurst(ctx: AudioContext, startTime: number, vol: number) {
 export function playClap() {
   const ctx = getCtx()
   const t = ctx.currentTime
-  const vols = [0.62, 0.58, 0.65, 0.55] // 약간 다른 볼륨으로 자연스럽게
-  for (let i = 0; i < 4; i++) {
-    noiseBurst(ctx, t + i * 0.2, vols[i])
-  }
+  const vols = [0.62, 0.58, 0.65, 0.55]
+  for (let i = 0; i < 4; i++) noiseBurst(ctx, t + i * 0.2, vols[i])
 }
 
 // 축하 팡파레: C5-E5-G5-C6 ┃ G5-C6 (밝고 신남)
