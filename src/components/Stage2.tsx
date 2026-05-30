@@ -72,7 +72,7 @@ export default function Stage2({ onComplete }: Props) {
       <header className="game-header">
         <div className="stage-label">2단계</div>
         <div>
-          <div className="stage-title">한그리가 뭐하고 있어요?</div>
+          <div className="stage-title">한그리가 뭐 하고 있어요?</div>
           <div className="stage-subtitle">알맞은 뜻을 고르세요.</div>
         </div>
         <div className="progress-pill">{idx + 1} / {stage2Questions.length}</div>

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { playClap } from '../sounds'
 
 interface Props {
   message: string
@@ -11,7 +12,8 @@ export default function PassOverlay({ message, onDone, playSound, duration = 240
   const doneRef = useRef(onDone)
 
   useEffect(() => {
-    playSound?.()
+    playClap()       // 모든 단계 완료 시 박수
+    playSound?.()    // 3단계: 팡파레 추가
     const id = setTimeout(() => doneRef.current(), duration)
     return () => clearTimeout(id)
   }, [duration, playSound])
