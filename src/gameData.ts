@@ -22,12 +22,12 @@ export const stage2Questions: Question[] = [
   { word: '도와주다', imagePath: '/images/도와주다.png', emoji: '🤝' },
 ];
 
-// 3단계 순서: 차례를 지키다 → 엎드리다 → 새치기하다 → 괴롭히다 → 바르게 앉다 → 차례를 지키다
+// 3단계 순서: 차례를 지키다 → 엎드리다 → 새치기하다 → 괴롭히다 → 바르게 앉다 → 도와주다
 export const stage3Questions: Question[] = [
   { word: '차례를 지키다', imagePath: '/images/차례를지키다.png', emoji: '🚦' },
   { word: '엎드리다', imagePath: '/images/엎드리다.png', emoji: '😴' },
   { word: '새치기하다', imagePath: '/images/새치기하다.png', emoji: '😤' },
   { word: '괴롭히다', imagePath: '/images/괴롭히다.png', emoji: '😢' },
   { word: '바르게 앉다', imagePath: '/images/바르게앉다.png', emoji: '🪑' },
-  { word: '차례를 지키다', imagePath: '/images/차례를지키다.png', emoji: '🚦' },
+  { word: '도와주다', imagePath: '/images/도와주다.png', emoji: '🤝' },
 ];

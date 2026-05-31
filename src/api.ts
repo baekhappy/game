@@ -19,6 +19,7 @@ export async function transcribeAudio(blob: Blob): Promise<string> {
 
 const ALIASES: Record<string, string[]> = {
   '새치기하다': ['새치기하다', '새치기', '세치기하다', '세치기', '새치기 하다'],
+  '차례를 지키다': ['차례를 지키다', '차례를지키다', '차례', '지키다', '차례를 지켜', '차례 지키다'],
 }
 
 export function checkAnswer(transcript: string, expected: string): boolean {

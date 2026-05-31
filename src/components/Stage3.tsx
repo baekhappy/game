@@ -79,6 +79,7 @@ export default function Stage3({ onComplete }: Props) {
   async function processAudio(blob: Blob) {
     try {
       const text = await transcribeAudio(blob)
+      console.log('[음성인식] 인식결과:', JSON.stringify(text), '| 정답:', q.word, '| 판정:', checkAnswer(text, q.word))
       if (checkAnswer(text, q.word)) {
         playCorrect()
         setCorrectCount(c => c + 1)
@@ -94,7 +95,8 @@ export default function Stage3({ onComplete }: Props) {
         playWrong()
         setFeedback('wrong')
       }
-    } catch {
+    } catch (err) {
+      console.error('[음성인식] API 오류:', err)
       playWrong()
       setFeedback('wrong')
     } finally {
